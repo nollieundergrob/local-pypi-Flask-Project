@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <title>Pypi Alabuga</title>
+</head>
+<body>
+    <div class="container">
+    <h1>Search for a Library</h1>
+    <form action="/search" method="POST">
+        <input type="text" class="search-input" name="query" placeholder="Enter library name">
+        <button class="btn_sub" type="submit">Search</button>
+    </form>
+    <h2>Список существующих библиотек</h2>
+    <div class="result_search">
+    {% for i in data%}
+    <a class="res" href="/lib/{{i}}" >{{i}}</a>
+    {%endfor%}
+    </div>
+</div>
+</body>
+</html>

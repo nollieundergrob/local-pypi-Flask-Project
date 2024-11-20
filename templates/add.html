@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <title>Управление библиотеками</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Добавить библиотеку</h1>
+        <form id="libraryForm" action="/append_library/" method="POST">
+            <input type="text" class="search-input" name="library_name" placeholder="Введите имя библиотеки" required>
+            <button class="btn_sub" type="submit">Добавить</button>
+        </form>
+        <div id="responseMessage" class="response-message"></div>
+
+        <h1>Удалить библиотеку</h1>
+        <form id="removeLibraryForm" action="/remove_library/" method="POST">
+            <select name="library_name" id="librarySelect" required>
+                <option value="None"></option>
+                {% for lib in libraries %}
+                    <option value="{{ lib }}">{{ lib }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn_sub" type="submit">Удалить</button>
+        </form>
+        <div id="removeResponseMessage" class="response-message"></div>
+    </div>
+
+    <script>
+        // Обработчик для добавления библиотеки
+        document.getElementById('libraryForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // предотвратить отправку формы по умолчанию
+            const formData = new FormData(this);
+
+            fetch('/append_library/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messageDiv = document.getElementById('responseMessage');
+                messageDiv.textContent = data.message || data.error;
+                messageDiv.style.color = data.error ? 'red' : 'green';
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        });
+
+        // Обработчик для удаления библиотеки
+        document.getElementById('removeLibraryForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // предотвратить отправку формы по умолчанию
+            const formData = new FormData(this);
+
+            fetch('/remove_library/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messageDiv = document.getElementById('removeResponseMessage');
+                messageDiv.textContent = data.message || data.error;
+                messageDiv.style.color = data.error ? 'red' : 'green';
+                // Обновляем список библиотек после удаления
+                if (!data.error) {
+                    updateLibrarySelect();
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        });
+
+        // Функция для обновления списка библиотек
+        function updateLibrarySelect() {
+            fetch('/get_libraries/')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('librarySelect');
+                    select.innerHTML = ''; // Очищаем текущий список
+                    data.libraries.forEach(lib => {
+                        const option = document.createElement('option');
+                        option.value = lib;
+                        option.textContent = lib;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка при обновлении списка библиотек:', error);
+                });
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+        updateLibrarySelect();
+    });
+    </script>
+</body>
+</html>
