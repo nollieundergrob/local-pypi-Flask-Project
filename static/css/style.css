@@ -1,166 +1,547 @@
-body {
-    font-family: 'Rubik', sans-serif;
+* {
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Consolas', sans-serif;
+    background: #f3f4f6;
     color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .container {
     max-width: 800px;
-    margin: 0 auto;
+    width: 90%;
     padding: 20px;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 h1 {
+    color: #111827;
     text-align: center;
-    margin-bottom: 20px;
     font-weight: 700;
-}
-
-h2 {
-    margin-top: 30px;
-    font-weight: 500;
-}
-
-form {
-    display: flex;
-    justify-content: center;
     margin-bottom: 20px;
+}
+
+/* Установка и предупреждения */
+.install_panel {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f9fafb;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 14px;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+    animation-delay: calc(var(--order) * 0.1s);
+}
+
+.accept {
+    color: #16a34a; /* Зелёный текст */
+    font-weight: bold;
+    font-size: 16px;
+    background-color: #dcfce7; /* Светло-зелёный фон */
+    padding: 10px;
+    border: 1px solid #86efac; /* Светло-зелёная рамка */
+    border-radius: 6px; /* Скруглённые углы */
+    margin-bottom: 10px; /* Отступ снизу */
+    box-shadow: 0 4px 6px rgba(22, 163, 74, 0.1); /* Лёгкая тень */
+}
+
+
+.warning {
+    color: #dc2626; /* Красный текст */
+    font-weight: bold;
+    font-size: 16px;
+    background-color: #fee2e2; /* Светло-красный фон */
+    padding: 10px;
+    border: 1px solid #f87171;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.warning_border {
+    border-color: #f87171;
+    background: #fff5f5;
+}
+
+.header_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+}
+
+/* Кнопка Copy */
+.copy-btn {
+    background-color: #4ade80;
+    color: white;
+    border: none;
+    margin: 0 5px 0 15px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.copy-btn:hover {
+    background-color: #22c55e;
+    transform: scale(1.05);
+}
+
+.copy-btn:active {
+    background-color: #16a34a;
+    transform: scale(1);
+}
+
+.copy-text {
+    background-color: #f3f4f6; /* Светло-серый фон */
+    color: #1f2937; /* Тёмно-серый текст */
+    font-family: 'Courier New', Courier, monospace; /* Моноширинный шрифт */
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 12px 15px;
+    border: 1px solid #d1d5db; /* Серый цвет рамки */
+    border-radius: 6px; /* Скруглённые углы */
+    margin: 5px 0; /* Отступ сверху и снизу */
+    white-space: pre-wrap; /* Сохранение форматирования текста */
+    word-break: break-all; /* Перенос длинных слов */
+    overflow: auto; /* Полоса прокрутки, если текст длинный */
+    transition: transform 0.6s ease, box-shadow 0.6s ease; /* Плавный переход */
+}
+
+/* Эффект при выделении текста или фокусе */
+.copy-text:hover {
+    transform: scale(1.02); /* Лёгкое увеличение */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Тень */
+    border-color: #d1d5db; /* Зелёная рамка */
+}
+
+
+/* Ссылки */
+.link {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 10px 5px 30px 0;
+    background-color: #4ade80;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.link:hover {
+    background-color: #22c55e;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Анимация */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1, h2 {
+    color: #111827;
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* Стили для форм */
+.form-section {
+    margin-bottom: 30px;
+}
+
+.styled-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .search-input {
-    width: 70%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
     font-size: 16px;
+    background: #f9fafb;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-.search-input:focus{
+
+.search-input:focus {
+    border-color: #4ade80;
     outline: 0;
+    box-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
 }
+
 .btn_sub {
-    padding: 10px 20px;
-    margin-left: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
+    padding: 12px 20px;
+    background-color: #4ade80;
     color: white;
+    border: none;
+    border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn_sub:hover {
-    background-color: #0056b3;
+    background-color: #22c55e;
+    transform: translateY(-2px);
+}
+.btn_sub:focus{
+    outline: 0;
 }
 
-.result_search {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+/* Анимация появления библиотек */
+.result_search .res {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: calc(var(--order, 0) * 0.1s);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ответы от сервера */
+.response-message {
     margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-.res {
-    display: block;
-    margin: 5px 10px;
-    padding: 10px 15px;
-    background-color: #e9ecef;
-    border-radius: 4px;
-    text-decoration: none;
-    color: #333;
-    transition: background-color 0.3s;
+.response-message.success {
+    color: #16a34a;
 }
 
+.response-message.error {
+    color: #dc2626;
+}
+
+/* Эффекты при наведении */
 .res:hover {
-    background-color: #d1d1d1;
+    background-color: #22c55e; /* Более насыщенный зелёный фон */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Усиление тени */
+    transform: translateY(-3px); /* Поднятие кнопки */
 }
 
-/* Responsive Design */
+/* Эффекты при нажатии */
+.res:active {
+    background-color: #16a34a; /* Тёмно-зелёный фон */
+    transform: translateY(0); /* Возврат к начальному положению */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Уменьшение тени */
+}
+
+/* Анимация появления */
+.res {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: calc(var(--order, 0) * 0.1s);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность */
 @media (max-width: 600px) {
-    .search-input {
-        width: 100%;
-    }
-    
-    .btn_sub {
-        width: 100%;
-        margin-left: 0;
+    .res {
+        width: 100%; /* Полная ширина на мобильных устройствах */
+        padding: 12px 15px; /* Более компактные отступы */
     }
 }
-.install_panel{
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #202020;
+
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    font-size: 14px;
+    font-weight: bold;
     color: #fff;
-}
-
-body {
-    font-family: 'Rubik', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    margin-top: 50px;
+    background-color: #4ade80; /* По умолчанию зелёный */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    z-index: 1000;
 }
 
-h1 {
-    text-align: center;
+/* Показ уведомления */
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Типы уведомлений */
+.notification.success {
+    background-color: #4ade80; /* Зелёный для успеха */
+}
+
+.notification.error {
+    background-color: #dc2626; /* Красный для ошибок */
+}
+.autocomplete-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.suggestion {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #1f2937;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.suggestion:hover {
+    background-color: #f3f4f6;
+    color: #111827;
+}
+
+
+/* Основной контейнер модального окна */
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Затемнённый фон */
+    z-index: 1000; /* Поверх всего контента */
+    overflow: auto; /* Полоса прокрутки, если содержимое превышает высоту экрана */
+}
+
+/* Содержимое модального окна */
+.modal-content {
+    position: relative;
+    background: #ffffff;
+    margin: 10% auto; /* Центрирование по вертикали */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px; /* Максимальная ширина */
+    width: 90%; /* Адаптивная ширина */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень вокруг окна */
+    animation: fadeIn 0.3s ease; /* Анимация появления */
+}
+
+/* Кнопка закрытия */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #dc2626; /* Красный цвет при наведении */
+}
+
+/* Кнопки сортировки */
+.sort-buttons {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 20px;
-    font-weight: 700;
 }
 
-p {
-    font-size: 16px;
-    line-height: 1.5;
-    margin: 10px 0;
+/* Анимация появления модального окна */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.install_panel {
-    background-color: #333;
-    color: #fff;
+/* Список библиотек в модальном окне */
+#fullLibraryList {
+    list-style: none; /* Убираем маркеры списка */
+    padding: 0;
+}
+
+.modal-library-item {
     padding: 10px;
-    border-radius: 4px;
-    font-family: monospace;
-    word-break: break-all; /* Для длинных строк */
+    margin: 5px 0;
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-a.back {
+.modal-library-item:hover {
+    background-color: #e5e7eb; /* Изменение фона при наведении */
+    transform: scale(1.02); /* Лёгкое увеличение */
+}
+
+.modal_button {
     display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
+    padding: 12px 20px;
+    font-size: 16px; /* Увеличенный размер текста */
+    font-weight: bold;
+    color: #ffffff; /* Белый текст */
+    background-color: #2563eb; /* Яркий синий фон */
+    border: none; /* Убираем рамку */
+    border-radius: 8px; /* Скруглённые углы */
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3); /* Тень */
+    cursor: pointer; /* Указатель мыши */
     text-align: center;
-    transition: background-color 0.3s;
+    transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease; /* Плавные эффекты */
 }
 
-a.back:hover {
-    background-color: #0056b3;
+/* Эффекты при наведении */
+.modal_button:hover {
+    background-color: #1e40af; /* Более насыщенный синий */
+    box-shadow: 0 6px 12px rgba(30, 64, 175, 0.4); /* Усиление тени */
+    transform: translateY(-3px); /* Лёгкое поднятие */
 }
 
-/* Responsive Design */
+/* Эффекты при нажатии */
+.modal_button:active {
+    background-color: #1d4ed8; /* Тёмно-синий фон */
+    transform: translateY(0); /* Возврат к начальному положению */
+    box-shadow: 0 3px 6px rgba(30, 64, 175, 0.2); /* Уменьшение тени */
+}
+
+/* Адаптивность */
 @media (max-width: 600px) {
-    .container {
-        padding: 15px;
-    }
-
-    .install_panel {
-        font-size: 14px;
+    .modal_button {
+        width: 100%; /* Полная ширина на мобильных устройствах */
+        font-size: 14px; /* Уменьшенный размер текста */
     }
 }
 
+/* Сетка для поиска и кнопки */
+.search-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Сетка для библиотек */
+.grid-library-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+/* Квадраты для библиотек */
+.res {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #4ade80; /* Ярко-зелёный фон */
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0; 
+    transform: scale(0.95);
+    animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Эффекты при наведении */
+.res:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* Стили для кнопки модального окна */
+.modal_button {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #2563eb;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal_button:hover {
+    background-color: #1e40af;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(30, 64, 175, 0.3);
+}
+
+/* Скрытие элементов */
+.hidden {
+    opacity: 0 !important; 
+    transform: scale(0.95) !important;
+    pointer-events: none !important;
+}
