@@ -1,13 +1,22 @@
+import time
 from flask import Flask, request, render_template, send_from_directory,Response,jsonify
 import os
 import random
 import threading,subprocess,shutil
+from flask_caching import Cache
+import socket
+
+host_addr = socket.gethostbyname(socket.gethostname())
 
 BASE_DIR = os.getcwd()
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000000
+app.config['MAX_CONTENT_LENGTH'] = 16 * 10000 * 1000000
+cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache'})
+times = []
+
 
 @app.route('/',methods=['GET','POST'])
+# @cache.cached(timeout=600)
 def index():
     data = os.listdir('static/libs')
     sorted_data = sorted(data, key=str.lower)
@@ -25,8 +34,8 @@ def find_lib(lib):
     archives = [f for f in sorted_files if f.endswith('.tar.gz') or f.endswith('.zip')]
     non_archives = [f for f in sorted_files if not f.endswith('.tar.gz') and not f.endswith('.zip')]
     sorted_files = non_archives + archives
-    install = 'pip install ' + ' '.join([f'http://10.13.225.234:5000/{libs_dir}/{query}/{i}' for i in sorted_files])
-    return render_template('results.html', install=install)
+    install = 'pip install ' + ' '.join([f'http://{host_addr}:5000/{libs_dir}/{query}/{i}' for i in sorted_files]) +' --no-deps'
+    return render_template('results.html', install=install,lib=query)
 
 
 @app.route('/search', methods=['POST'])
@@ -41,13 +50,16 @@ def search():
     archives = [f for f in sorted_files if f.endswith('.tar.gz') or f.endswith('.zip')]
     non_archives = [f for f in sorted_files if not f.endswith('.tar.gz') and not f.endswith('.zip')]
     sorted_files = non_archives + archives
-    install = 'pip install ' + ' '.join([f'http://10.13.225.234:5000/{libs_dir}/{query}/{i}' for i in sorted_files])
+    install = 'pip install ' + ' '.join([f'http://10.13.225.234:5000/{libs_dir}/{query}/{i}' for i in sorted_files]) + '--no-deps'
     return render_template('results.html', install=install)
 
 @app.route('/static/libs/<libs>/<filename>')
+@cache.cached(timeout=600)
 def download_file(libs,filename):
     with open(f'static/libs/{libs}/'+filename,'rb') as file:
-        return file.read()
+            file_data = file.read()
+            return file_data
+
 
 @app.route('/remove_library/', methods=['POST'])
 def remove_lib():
@@ -73,7 +85,6 @@ def get_libraries():
 
 def download_library(library_name, library_path):
     os.makedirs(library_path, exist_ok=True)
-
     try:
         subprocess.run(['pip', 'download', library_name, '--dest', library_path,
                         '--trusted-host', 'pypi.org', '--trusted-host', 'files.pythonhosted.org'],
@@ -97,4 +108,10 @@ def append_lib():
     return render_template('add.html')
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0')
+    app.run(
+        debug=False,
+        host='0.0.0.0',
+        # host='127.0.0.1
+        # '
+        
+            )

@@ -1,17 +1,40 @@
-<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-    <title>Pypi Alabuga</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Search Results</title>
+</head>
 <body>
     <div class="container">
-    <h1>Search Results</h1>
-        <p>Обязательно установите wheel</p>
-        <p class="install_panel">pip install http://10.13.225.234:5000/static/libs/wheel/wheel-0.45.0-py3-none-any.whl</p>
-        <p class="install_panel">{{ install }}</p>
-    <a href="/" class="back">Back to search</a>
-</div>
+        <h1>{{lib}}</h1>
+
+        <div class="install_panel" style="--order:1;">
+            <div class="header_row">
+                <p class="accept">Команда для установки {{lib}} </p>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+            </div>
+            <pre class="copy-text">{{ install }}</pre>
+        </div>
+
+        <a href="https://pypi.org/project/{{lib}}" class="link">Link to PyPI</a>
+        <a href="/" class="link">Back to Search</a>
+
+        {% if lib == "djangorestframework" %}
+
+        <div class="install_panel warning_bord  er" style="--order:2;">
+            <div class="header_row">
+                <p class="warning">
+                    Возможно потребуется установить библиотеку <span class="attention">Wheel</span> для решения проблемы с распаковкой библиотеки c расширением tar.gz
+                </p>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+            </div>
+            <pre class="copy-text">pip install http://10.13.225.234:5000/static/libs/wheel/wheel-0.45.0-py3-none-any.whl --no-deps</pre>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

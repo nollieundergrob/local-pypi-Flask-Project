@@ -1,27 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-    <title>Pypi Alabuga</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Поиск библиотек</title>
 </head>
 <body>
     <div class="container">
-    <h1>Search for a Library</h1>
-    <form action="/search" method="POST">
-        <input type="text" class="search-input" name="query" placeholder="Enter library name">
-        <button class="btn_sub" type="submit">Search</button>
-    </form>
-    <h2>Список существующих библиотек</h2>
-    <div class="result_search">
-    {% for i in data%}
-    <a class="res" href="/lib/{{i}}" >{{i}}</a>
-    {%endfor%}
+        <h1>Поиск библиотек</h1>
+
+        <!-- Поле для поиска и кнопка модального окна -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Введите название библиотеки">
+            <button class="modal_button" id="openModal">Открыть полный список библиотек</button>
+        </div>
+
+        <!-- Список библиотек -->
+        <h2>Результаты поиска</h2>
+        <div id="libraryList" class="grid-library-list">
+            {% for lib in data %}
+            <a class="res" href="/lib/{{ lib }}">{{ lib }}</a>
+            {% endfor %}
+        </div>
+
+        <!-- Модальное окно -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" id="closeModal">&times;</span>
+                <h2>Полный список библиотек</h2>
+
+                <!-- Кнопки сортировки -->
+                <div class="sort-buttons">
+                    <button class="btn_sub" id="sortAsc">Сортировать А-Я</button>
+                    <button class="btn_sub" id="sortDesc">Сортировать Я-А</button>
+                </div>
+
+                <!-- Полный список библиотек -->
+                <ul id="fullLibraryList">
+                    {% for lib in data %}
+                    <li class="modal-library-item">{{ lib }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
-</div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
