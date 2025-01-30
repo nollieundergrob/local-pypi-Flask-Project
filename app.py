@@ -12,7 +12,6 @@ host_addr = '10.14.37.165'
 BASE_DIR = os.getcwd()
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 10000 * 1000000
-asgi_app = ASGIApp(app) 
 cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache'})
 times = []
 
