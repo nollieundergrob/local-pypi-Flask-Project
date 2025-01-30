@@ -6,7 +6,8 @@ import threading,subprocess,shutil
 from flask_caching import Cache
 import socket
 
-host_addr = socket.gethostbyname(socket.gethostname())
+host_addr = '10.14.37.165'
+# host_addr = socket.gethostbyname(socket.gethostname())
 
 BASE_DIR = os.getcwd()
 app = Flask(__name__)
