@@ -51,7 +51,7 @@ def search():
     archives = [f for f in sorted_files if f.endswith('.tar.gz') or f.endswith('.zip')]
     non_archives = [f for f in sorted_files if not f.endswith('.tar.gz') and not f.endswith('.zip')]
     sorted_files = non_archives + archives
-    install = 'pip install ' + ' '.join([f'http://10.13.225.234:5000/{libs_dir}/{query}/{i}' for i in sorted_files]) + '--no-deps'
+    install = 'pip install ' + ' '.join([f'http://{host_addr}/{libs_dir}/{query}/{i}' for i in sorted_files]) + '--no-deps'
     return render_template('results.html', install=install)
 
 @app.route('/static/libs/<libs>/<filename>')
@@ -111,7 +111,8 @@ def append_lib():
 if __name__ == '__main__':
     app.run(
         debug=False,
-        host='10.14.37.165',
+        host='0.0.0.0',
+        port=5000
         # host='127.0.0.1
         # '
         
