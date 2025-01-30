@@ -12,6 +12,7 @@ host_addr = '10.14.37.165'
 BASE_DIR = os.getcwd()
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 10000 * 1000000
+asgi_app = ASGIApp(app) 
 cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache'})
 times = []
 
@@ -109,11 +110,5 @@ def append_lib():
     return render_template('add.html')
 
 if __name__ == '__main__':
-    app.run(
-        debug=False,
-        host='0.0.0.0',
-        port=5000
-        # host='127.0.0.1
-        # '
-        
-            )
+    import uvicorn
+    uvicorn.run(asgi_app, host="0.0.0.0", port=5000)
